@@ -1,4 +1,5 @@
 package com.example.iso_finder_jc.presentation
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,21 +24,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountryList(
-    countryListViewModel: CountryListViewModel = viewModel(),
-    searchText: String = "",
-    onTextChange: (String) -> Unit
 ) {
-    val state = countryListViewModel.state
+
+    val viewModel: CountryListViewModel = viewModel()
+    val state = viewModel.state
     val focusRequester = remember { FocusRequester() }
     Column {
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-                .focusRequester(focusRequester),
-            value = searchText,
+        OutlinedTextField(modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .focusRequester(focusRequester),
+            value = state.searchText,
             onValueChange = {
-                onTextChange(it)
+                viewModel.searchCountryList(it)
             },
             leadingIcon = {
                 Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
@@ -46,8 +45,7 @@ fun CountryList(
                 Row {
                     Text(text = "Search...")
                 }
-            }
-        )
+            })
         LazyColumn(
             modifier = Modifier
         ) {
